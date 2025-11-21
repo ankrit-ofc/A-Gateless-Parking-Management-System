@@ -2,10 +2,8 @@
 import React, { useEffect, useRef, useCallback, useMemo } from 'react';
 import { Input } from './ui/input';
 import { LatLng } from '@/types';
-import { useJsApiLoader, Libraries } from '@react-google-maps/api';
-
-// Correct Google Maps library names - only 'places' is needed for autocomplete
-const libraries: Libraries = ['places'];
+import { useJsApiLoader } from '@react-google-maps/api';
+import { GOOGLE_MAPS_LIBRARIES } from '@/lib/google-maps';
 
 type AddressAutoCompleteInputProps = {
   onAddressSelect: (address: string, gpscoords: LatLng) => void;
@@ -29,7 +27,7 @@ function AddressAutoCompleteInput({
   
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: apiKey || '',
-    libraries,
+    libraries: GOOGLE_MAPS_LIBRARIES,
   });
 
   // Memoize the callback to prevent infinite re-renders

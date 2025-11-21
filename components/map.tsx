@@ -2,11 +2,9 @@
 
 import { buildMapInfoCardContent, buildMapInfoCardContentForDestination, destinationPin, getStreetFromAddress, parkingPin, parkingPinWithIndex } from "@/lib/utils"
 import { MapAddressType, MapParams } from "@/types"
-import { useJsApiLoader, Libraries } from "@react-google-maps/api"
+import { useJsApiLoader } from "@react-google-maps/api"
 import { useEffect, useMemo, useRef } from "react"
-
-// Correct Google Maps library names for map and markers
-const libraries: Libraries = ['marker', 'places'];
+import { GOOGLE_MAPS_LIBRARIES } from "@/lib/google-maps"
 
 function Map({ mapParams }: { mapParams: string}) {
     const mapRef = useRef<HTMLDivElement>(null)
@@ -32,7 +30,7 @@ function Map({ mapParams }: { mapParams: string}) {
 
     const { isLoaded, loadError } = useJsApiLoader({
         googleMapsApiKey: apiKey || '',
-        libraries,
+        libraries: GOOGLE_MAPS_LIBRARIES,
     })
 
     const getPinType = (loc: MapParams): string => {
