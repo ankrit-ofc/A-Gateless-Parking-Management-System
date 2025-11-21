@@ -27,6 +27,9 @@ function Map({ mapParams }: { mapParams: string}) {
         return <div className="p-4 text-slate-400">No locations to display on map</div>
     }
 
+    // TypeScript now knows params is non-null after the check above
+    const validParams: MapParams[] = params
+
     const { isLoaded } = useJsApiLoader({
         nonce: "477d4456-f7b5-45e2-8945-5f17b3964752",
         googleMapsApiKey: process.env.NEXT_PUBLIC_MAPS_API_KEY as string,
@@ -40,11 +43,11 @@ function Map({ mapParams }: { mapParams: string}) {
     }
 
     useEffect(() => {
-        if (isLoaded && params && params.length > 0 && mapRef.current) {
+        if (isLoaded && validParams.length > 0 && mapRef.current) {
             const mapOptions = {
                 center: {
-                    lat: params[0].gpscoords.lat,
-                    lng: params[0].gpscoords.lng
+                    lat: validParams[0].gpscoords.lat,
+                    lng: validParams[0].gpscoords.lng
                 },
                 zoom: 14,
                 mapId: 'MY-MAP-ID-1234'
@@ -62,7 +65,7 @@ function Map({ mapParams }: { mapParams: string}) {
             maxWidth: 200
         })
 
-        params?.map((loc, index) => {
+        validParams.map((loc, index) => {
 
             const marker = new google.maps.marker.AdvancedMarkerElement({
                 map,
@@ -93,8 +96,8 @@ function Map({ mapParams }: { mapParams: string}) {
                     fillOpacity: 0.35,
                     map,
                     center: {
-                        lat: params[0].gpscoords.lat,
-                        lng: params[0].gpscoords.lng
+                        lat: validParams[0].gpscoords.lat,
+                        lng: validParams[0].gpscoords.lng
                     },
                     radius: loc.radius
                 })
