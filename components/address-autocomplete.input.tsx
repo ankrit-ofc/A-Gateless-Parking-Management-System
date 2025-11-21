@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Input } from './ui/input';
 import { LatLng } from '@/types';
-import { useJsApiLoader } from '@react-google-maps/api';
+import { useJsApiLoader, Libraries } from '@react-google-maps/api';
 import { libs } from '@/lib/utils';
 
 type AddressAutoCompleteInputProps = {
@@ -19,7 +19,7 @@ function AddressAutoCompleteInput({
   const { isLoaded } = useJsApiLoader({
     nonce: "477d4456-f7b5-45e2-8945-5f17b3964752",
     googleMapsApiKey: process.env.NEXT_PUBLIC_MAPS_API_KEY!,
-    libraries: libs,
+    libraries: libs as Libraries,
   });
 
   useEffect(() => {

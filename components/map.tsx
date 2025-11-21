@@ -2,7 +2,7 @@
 
 import { buildMapInfoCardContent, buildMapInfoCardContentForDestination, destinationPin, getStreetFromAddress, libs, parkingPin, parkingPinWithIndex } from "@/lib/utils"
 import { MapAddressType, MapParams } from "@/types"
-import { useJsApiLoader } from "@react-google-maps/api"
+import { useJsApiLoader, Libraries } from "@react-google-maps/api"
 import { useEffect, useRef } from "react"
 
 function Map({ mapParams }: { mapParams: string}) {
@@ -13,7 +13,7 @@ function Map({ mapParams }: { mapParams: string}) {
     const { isLoaded } = useJsApiLoader({
         nonce: "477d4456-f7b5-45e2-8945-5f17b3964752",
         googleMapsApiKey: process.env.NEXT_PUBLIC_MAPS_API_KEY as string,
-        libraries: libs
+        libraries: libs as Libraries
     })
 
     const mapRef = useRef<HTMLDivElement>(null)
