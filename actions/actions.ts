@@ -75,8 +75,20 @@ export async function findNearbyLocations(maxDistance: number, searchParams: Sea
 
         await connectToDB()
 
-        const st = new Date(`${searchParams.arrivingon}T${searchParams.arrivingtime}`)
-        const et = new Date(`${searchParams.arrivingon}T${searchParams.leavingtime}`)
+        // Handle date strings properly - arrivingon is formatted as yyyy-MM-dd
+        // arrivingtime and leavingtime are strings like "14:30"
+        const arrivingDate = typeof searchParams.arrivingon === 'string' 
+            ? searchParams.arrivingon 
+            : format(searchParams.arrivingon as Date, 'yyyy-MM-dd');
+        const arrivingTime = typeof searchParams.arrivingtime === 'string' 
+            ? searchParams.arrivingtime 
+            : format(searchParams.arrivingtime as Date, 'HH:mm');
+        const leavingTime = typeof searchParams.leavingtime === 'string' 
+            ? searchParams.leavingtime 
+            : format(searchParams.leavingtime as Date, 'HH:mm');
+
+        const st = new Date(`${arrivingDate}T${arrivingTime}`)
+        const et = new Date(`${arrivingDate}T${leavingTime}`)
 
         const parkingLocations: ParkingLocation[] = await ParkingLocationModel.find({
             location: {
@@ -124,7 +136,7 @@ export async function getParkingLocation(
 ) {
     try {
 
-        connectToDB()
+        await connectToDB()
 
         const location = await ParkingLocationModel.findById<ParkingLocation>(id)
 
@@ -139,7 +151,7 @@ export async function getParkingLocation(
 export async function getParkingLocations() {
     try {
 
-        connectToDB()
+        await connectToDB()
 
         const location = await ParkingLocationModel.find<ParkingLocation>({})
 

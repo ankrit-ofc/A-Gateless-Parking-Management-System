@@ -82,7 +82,7 @@ function EmailTemplate(props: EmailTemplateProps) {
                         <Row>
                             <Column align="center">
                                 <Link
-                                    href="http://localhost:3000/mybookings"
+                                    href={`${process.env.NEXT_PUBLIC_APP_URL || 'https://your-app.vercel.app'}/mybookings`}
                                     style={{ ...button, padding: '10px' }}>
                                     My bookings
                                 </Link>

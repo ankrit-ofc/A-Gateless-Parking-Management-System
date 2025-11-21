@@ -82,25 +82,48 @@ function SearchForm({
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           {/* Address Input */}
-          <div className="space-y-2">
-            <Label 
-              htmlFor="parkingat" 
-              className="text-white font-medium flex items-center space-x-2"
-            >
-              <MapPin className="w-4 h-4 text-emerald-400" />
-              <span>Where are you going?</span>
-            </Label>
-            <div className="relative">
-              <AddressAutoCompleteInput
-                onAddressSelect={handleAddressSelect} 
-                selectedAddress=''
-               // placeholder="MG Road Bangalore, Mysore Palace, Hubli..."
-              />
-            </div>
-            <p className="text-xs text-slate-500 mt-1">
-              Try: Commercial Street Bangalore, Brigade Road, Infosys Mysore, etc.
-            </p>
-          </div>
+          <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem className="space-y-2">
+                <FormLabel className="text-white font-medium flex items-center space-x-2">
+                  <MapPin className="w-4 h-4 text-emerald-400" />
+                  <span>Where are you going?</span>
+                </FormLabel>
+                <FormControl>
+                  <AddressAutoCompleteInput
+                    onAddressSelect={handleAddressSelect}
+                    selectedAddress={field.value || ''}
+                    value={field.value || ''}
+                    onChange={field.onChange}
+                    error={form.formState.errors.address?.message}
+                  />
+                </FormControl>
+                {form.formState.errors.address && (
+                  <p className="text-xs text-red-400 mt-1">
+                    {form.formState.errors.address.message}
+                  </p>
+                )}
+                <p className="text-xs text-slate-500 mt-1">
+                  Try: Commercial Street Bangalore, Brigade Road, Infosys Mysore, etc.
+                </p>
+              </FormItem>
+            )}
+          />
+
+          {/* GPS Coordinates - Hidden field for form submission */}
+          <FormField
+            control={form.control}
+            name="gpscoords"
+            render={({ field }) => (
+              <FormItem className="hidden">
+                <FormControl>
+                  <input type="hidden" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
           {/* Date and Time Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">

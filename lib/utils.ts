@@ -3,8 +3,9 @@ import { type ClassValue, clsx } from "clsx"
 import { compareAsc, differenceInMinutes, getHours, getMinutes } from "date-fns"
 import { twMerge } from "tailwind-merge"
 
-// Use string array instead of Library type to avoid version conflicts
-export const libs: string[] = ['core', 'maps', 'places', 'marker']
+// Note: This is no longer used - libraries are now defined in components
+// Keeping for backwards compatibility if needed
+export const libs: string[] = ['marker', 'places']
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
