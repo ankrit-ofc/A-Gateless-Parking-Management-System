@@ -101,21 +101,39 @@ function AddressAutoCompleteInput({
 
   if (!apiKey) {
     return (
-      <Input 
-        placeholder="Google Maps API key not configured" 
-        disabled 
-        className="bg-slate-800/50 border-red-500 text-white"
-      />
+      <div className="w-full">
+        <Input 
+          placeholder="Google Maps API key not configured" 
+          disabled 
+          className="bg-slate-800/50 border-red-500 text-white"
+        />
+        <p className="mt-1 text-xs text-red-400">
+          Set <code className="bg-red-900/50 px-1 rounded">NEXT_PUBLIC_MAPS_API_KEY</code> in Vercel
+        </p>
+      </div>
     );
   }
 
   if (loadError) {
+    const errorMessage = loadError.message || 'Unknown error';
+    const isAuthError = errorMessage.includes('Do you own this website') || errorMessage.includes('refererNotAllowedMapError');
+    
     return (
-      <Input 
-        placeholder="Error loading Google Maps" 
-        disabled 
-        className="bg-slate-800/50 border-red-500 text-white"
-      />
+      <div className="w-full">
+        <Input 
+          placeholder="Error loading Google Maps" 
+          disabled 
+          className="bg-slate-800/50 border-red-500 text-white"
+        />
+        <p className="mt-1 text-xs text-red-400">
+          {errorMessage}
+        </p>
+        {isAuthError && (
+          <p className="mt-1 text-xs text-yellow-400">
+            Tip: Add <code className="bg-yellow-900/50 px-1 rounded">*.vercel.app/*</code> to API key restrictions in Google Cloud Console
+          </p>
+        )}
+      </div>
     );
   }
 

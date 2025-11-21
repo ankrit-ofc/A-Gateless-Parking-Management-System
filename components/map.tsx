@@ -173,11 +173,37 @@ function Map({ mapParams }: { mapParams: string}) {
     }
 
     if (!apiKey) {
-        return <div className="p-4 text-red-400">Google Maps API key not configured</div>
+        return (
+            <div className="p-4 bg-red-900/20 border border-red-500 rounded-lg">
+                <p className="text-red-400 font-semibold mb-2">Google Maps API Key Not Configured</p>
+                <p className="text-red-300 text-sm">
+                    Please set <code className="bg-red-900/50 px-1 rounded">NEXT_PUBLIC_MAPS_API_KEY</code> in your Vercel environment variables.
+                </p>
+            </div>
+        )
     }
 
     if (loadError) {
-        return <div className="p-4 text-red-400">Error loading Google Maps: {loadError.message}</div>
+        const errorMessage = loadError.message || 'Unknown error';
+        const isAuthError = errorMessage.includes('Do you own this website') || errorMessage.includes('refererNotAllowedMapError');
+        
+        return (
+            <div className="p-4 bg-red-900/20 border border-red-500 rounded-lg">
+                <p className="text-red-400 font-semibold mb-2">Error Loading Google Maps</p>
+                <p className="text-red-300 text-sm mb-2">{errorMessage}</p>
+                {isAuthError && (
+                    <div className="mt-3 p-3 bg-red-900/30 rounded border border-red-600">
+                        <p className="text-red-200 text-xs font-semibold mb-1">Common Fixes:</p>
+                        <ul className="text-red-300 text-xs space-y-1 list-disc list-inside">
+                            <li>Check API key restrictions in Google Cloud Console</li>
+                            <li>Add your Vercel domain to HTTP referrer restrictions: <code className="bg-red-900/50 px-1 rounded">*.vercel.app/*</code></li>
+                            <li>Ensure Maps JavaScript API and Places API are enabled</li>
+                            <li>Verify billing is enabled in Google Cloud Console</li>
+                        </ul>
+                    </div>
+                )}
+            </div>
+        )
     }
 
     if (!isLoaded) {
